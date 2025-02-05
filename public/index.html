@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> multiplayer roleplay </title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chatContainer" style="display: none;"></div>
+
+    <div class="login">
+        <h1>login</h1>
+        name : <input id="name"> <br>
+        <button onclick="login()">login</button>
+    </div>
+
+    <div class="newChat" style="display: none;">
+        <input id="chatinput">
+        <br>
+        <button id="chatbutton" onclick="addChat()">Chat</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <script src="main.js"></script>
+
+</body>
+</html>
