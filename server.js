@@ -23,7 +23,13 @@ server.listen(3000, () => {
 
 function load() {
     if (fs.existsSync(chatFile)) {
-        return JSON.parse(fs.readFileSync(chatFile, "utf8"));
+        try {
+            const data = fs.readFileSync(chatFile, "utf8");
+            return data.trim() ? JSON.parse(data) : [];
+        } catch (error) {
+            console.error("❌ Erreur lors de la lecture du fichier chats.json :", error);
+            return [];
+        }
     }
     return [];
 }
