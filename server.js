@@ -31,7 +31,7 @@ function load() {
 function save(chats) {
     fs.writeFile(chatFile, JSON.stringify(chats, null, 2), "utf8", (err) => {
         if (err) {
-            return err
+            io.emit("serverError", err);
         }
     });
 }
@@ -52,11 +52,7 @@ io.on("connection", (socket) => {
         console.log(chat)
 
         chats.push(chat);
-        const err = save(chats);
-
-        if (err) {
-            io.emit("serverError", err)
-        }
+        save(chats);
 
         io.emit("chat", chats);
     });
