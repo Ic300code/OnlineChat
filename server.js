@@ -23,6 +23,7 @@ server.listen(3000, () => {
 
 function load() {
     if (fs.existsSync(chatFile)) {
+        console.log("No error while loading");
         return JSON.parse(fs.readFileSync(chatFile, "utf8"));
     } else {
         fs.writeFileSync(chatFile, "[]", "utf8");
@@ -35,6 +36,8 @@ function save(chats) {
     fs.writeFile(chatFile, JSON.stringify(chats, null, 2), "utf8", (err) => {
         if (err) {
             io.emit("serverError", err)
+        } else {
+            console.log("No error while saving");
         }
     });
 }
