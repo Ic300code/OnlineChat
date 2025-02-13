@@ -24,6 +24,9 @@ server.listen(3000, () => {
 function load() {
     if (fs.existsSync(chatFile)) {
         return JSON.parse(fs.readFileSync(chatFile, "utf8"));
+    } else {
+        fs.writeFileSync(chatFile, "[]", "utf8");
+        io.emit("serverError", "Chat file not found, creating new file");
     }
     return [];
 }
@@ -31,7 +34,7 @@ function load() {
 function save(chats) {
     fs.writeFile(chatFile, JSON.stringify(chats, null, 2), "utf8", (err) => {
         if (err) {
-            io.emit("serverError", err);
+            io.emit("serverError", err)
         }
     });
 }
