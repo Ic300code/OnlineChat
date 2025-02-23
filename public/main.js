@@ -35,7 +35,7 @@ socket.on("chat", (chats) => {
 
         const template = document.getElementById("chatPreset");
         const clone = template.content.cloneNode(true);
-clone.querySelector("#username").textContent = chat.name.charAt(0);
+        clone.querySelector("#username").textContent = chat.name.charAt(0);
         clone.querySelector("#description").textContent = chat.message;
         chatContainer.appendChild(clone);
     });
