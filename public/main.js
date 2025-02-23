@@ -5,10 +5,10 @@ function addChat() {
 
     const input = document.getElementById("name");
     const name = input.value;
-    name = name.charAt(0);
+    const initial = name.charAt(0);
 
     if (name != "") {
-        socket.emit("chat", { name, name });
+        socket.emit("chat", { chatInput, initial });
 
         document.getElementById("chatinput").value = ""; 
     }
