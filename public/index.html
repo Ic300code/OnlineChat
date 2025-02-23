@@ -8,20 +8,27 @@
 
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body translate="no">
     <div class="chatContainer" style="display: none;"></div>
 
     <div class="login">
         <h1>login</h1>
-        name : <input id="name"> <br>
-        <button onclick="login()">login</button>
+        <input id="name" placeholder="username"> <br>
+        <button id="loginButton" onclick="login()">login</button>
     </div>
 
     <div class="newChat" style="display: none;">
         <input id="chatinput">
         <br>
-        <button id="chatbutton" onclick="addChat()">Chat</button>
+        <button id="chatbutton" onclick="addChat()">📤</button>
     </div>
+
+    <template id="chatPreset" style="display: none;">
+        <div class="chatMessage">
+            <h3 id="username">N</h3>
+            <h5 id="description">Chat description</h5>
+        </div>
+    </template>
 
     <script src="/socket.io/socket.io.js"></script>
     
