@@ -5,10 +5,12 @@ function addChat() {
 
     const input = document.getElementById("name");
     const name = input.value;
-    
-    socket.emit("chat", [chatInput, name]);
 
-    document.getElementById("chatinput").value = "";
+    if (name != "") {
+        socket.emit("chat", { message: chatInput, name: name });
+
+        document.getElementById("chatinput").value = ""; 
+    }
 }
 
 function login() {
@@ -22,25 +24,23 @@ function login() {
     chatContainer.style.display = "flex";
     newChatContainer.style.display = "flex";
     loginContainer.style.display = "none";
-    
-}
+    }
 
 socket.on("chat", (chats) => {
     const chatContainer = document.querySelector(".chatContainer");
     chatContainer.innerHTML = "";
 
-    const input = document.getElementById("name");
-    const name = input.textContent;
+        chats.forEach((chat) => {
+        console.log(chat);
 
-    chats.forEach((chats) => {
-        console.log(chats)
-
-        const chatElement = document.createElement("p");
-        chatElement.textContent = chats[1]+":"+chats[0];
-        chatContainer.appendChild(chatElement);
+        const template = document.getElementById("chatPreset");
+        const clone = template.content.cloneNode(true);
+clone.querySelector("#username").textContent = chat.name.charAt(0);
+        clone.querySelector("#description").textContent = chat.message;
+        chatContainer.appendChild(clone);
     });
 });
 
 socket.on("serverError", (err) => {
     console.error("Erreur du serveur :", err);
-})
+});
