@@ -7,7 +7,7 @@ function addChat() {
     const name = input.value;
 
     if (name != "") {
-        socket.emit("chat", { message: chatInput, name: name });
+        socket.emit("chat", { chatInput, name });
 
         document.getElementById("chatinput").value = ""; 
     }
@@ -35,8 +35,8 @@ socket.on("chat", (chats) => {
 
         const template = document.getElementById("chatPreset");
         const clone = template.content.cloneNode(true);
-        clone.querySelector("#username").textContent = chat.name.charAt(0);
-        clone.querySelector("#description").textContent = chat.message;
+        clone.querySelector("#username").textContent = chat[0].charAt(0);
+        clone.querySelector("#description").textContent = chat[1].message;
         chatContainer.appendChild(clone);
     });
 });
