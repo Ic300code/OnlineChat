@@ -12,7 +12,9 @@ body {
     height: 100vh;
     margin: 0;
 
-    background-color: rgb(47, 49, 63);
+    overflow: hidden;
+
+    background: linear-gradient(180deg, rgb(62, 65, 83) 0%, rgb(27, 29, 37) 100%);
 
     font-size: x-large;
     font-family: 'Fredoka';
@@ -36,6 +38,11 @@ body {
     padding: 10px;
 }
 
+.newChat {
+    height: 10vh;
+    flex-direction: row;
+}
+
 input {
     width: 90%;
     height: 10vh;
@@ -50,6 +57,13 @@ input {
     background-color: rgb(49, 51, 66);
     border: none;
     border-radius: 3vw;
+
+    outline: none;
+    box-shadow: none;
+}
+
+#chatinput {
+    height: 9vh;   
 }
 
 #chatbutton:hover, button:hover {
@@ -57,7 +71,81 @@ input {
     background-color: rgb(59, 61, 83);
 }
 
-#chatbutton, button {
+#username, #description {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#username {
+    background-color: rgb(82, 0, 175);
+    border-radius: 3vw;
+
+    font-family: "Fredoka";
+    font-size: xx-large;
+
+    width: 8vh;
+    height: 8vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#chatPreset {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: rgb(44, 46, 59);
+    border-radius: 3vw;
+    padding: 10px;
+    width: 100%;
+    max-width: 500px;
+
+    left: 20vw;
+    position: absolute;
+}
+
+.chatMessage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+#description {
+    position: absolute;
+    left: 5vw;
+    font-family: "Fredoka";
+    font-size: large;
+    color: white;
+    margin: 0;
+}
+
+#chatbutton{
+    width: 10vh;
+    height: 10vh;
+    max-width: 300px;
+
+    background-color: rgb(49, 51, 66);
+    border-radius: 3vw;
+    border: none;
+
+    font-weight : 700;
+    font-size: x-large;
+    font-family: 'Fredoka';
+    color: white;
+
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+#loginButton{
     width: 100%;
     height: 10vh;
     max-width: 300px;
@@ -77,8 +165,12 @@ input {
 .chatContainer {
     display: flex;
     flex-direction: column;
-
-    font-weight : 700;
+    position: relative;
+    height: 70vh;
+    width: 90vw;
+    overflow: hidden;
+    padding: 0px;
+    font-weight: 700;
     font-size: x-large;
     font-family: 'Fredoka';
     color: white;
