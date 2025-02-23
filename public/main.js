@@ -5,9 +5,10 @@ function addChat() {
 
     const input = document.getElementById("name");
     const name = input.value;
+    name = name.charAt(0);
 
     if (name != "") {
-        socket.emit("chat", { chatInput, name });
+        socket.emit("chat", { name, name });
 
         document.getElementById("chatinput").value = ""; 
     }
@@ -24,7 +25,7 @@ function login() {
     chatContainer.style.display = "flex";
     newChatContainer.style.display = "flex";
     loginContainer.style.display = "none";
-    }
+}
 
 socket.on("chat", (chats) => {
     const chatContainer = document.querySelector(".chatContainer");
@@ -35,8 +36,8 @@ socket.on("chat", (chats) => {
 
         const template = document.getElementById("chatPreset");
         const clone = template.content.cloneNode(true);
-        clone.querySelector("#username").textContent = chat[0].charAt(0);
-        clone.querySelector("#description").textContent = chat[1].message;
+        clone.querySelector("#username").textContent = chat[0];
+        clone.querySelector("#description").textContent = chat[1];
         chatContainer.appendChild(clone);
     });
 });
