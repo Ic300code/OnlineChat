@@ -45,6 +45,8 @@ const maxChats = 4;
 
 io.on("connection", (socket) => {
 
+    console.log("New player connected !");
+
     socket.emit("chat", chats)
 
     socket.on("chat", (chat) => {
