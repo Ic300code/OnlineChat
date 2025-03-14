@@ -1,64 +1,77 @@
 const express = require("express");
 const app = express();
-
 const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
-
 const server = http.createServer(app);
 const io = new Server(server);
+const axios = require("axios");
 
-const fs = require("fs");
-const chatFile = path.join(__dirname, "chats.json")
+const binId = "67d454228960c979a5718d25";
+const masterKey = "$2a$10$vZ78La5jYfAseHaXyGeGC.zY9lB5GOyTUJK5zmXnUa2qPhPPc8AOa";
+
+const JSONBIN_BASE_URL = `https://api.jsonbin.io/v3/b/${binId}`;
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/", (request, response) => {
-    return response.sendFile(path.join(__dirname, "public", "index.html"));
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 server.listen(3000, () => {
     console.log("port connected to 3000");
 });
 
-function load() {
-    if (fs.existsSync(chatFile)) {
-        return JSON.parse(fs.readFileSync(chatFile, "utf8"));
-    } else {
-        fs.writeFileSync(chatFile, "[]", "utf8");
-        io.emit("serverError", "Chat file not found, creating new file");
+async function load() {
+    try {
+        const res = await axios.get(JSONBIN_BASE_URL, {
+            headers: {
+                "X-Master-Key": masterKey
+            }
+        });
+        return res.data.record || [];
+    } catch (err) {
+        console.error("Erreur de chargement JSONBin :", err.message);
+        io.emit("serverError", "Erreur de chargement depuis JSONBin");
+        return [];
     }
-    return [];
 }
 
-function save(chats) {
-    fs.writeFile(chatFile, JSON.stringify(chats, null, 2), "utf8", (err) => {
-        if (err) {
-            io.emit("serverError", err)
-        }
-    });
+async function save(chats) {
+    try {
+        await axios.put(JSONBIN_BASE_URL, chats, {
+            headers: {
+                "Content-Type": "application/json",
+                "X-Master-Key": masterKey
+            }
+        });
+    } catch (err) {
+        console.error("Erreur de sauvegarde JSONBin :", err.message);
+        io.emit("serverError", "Erreur de sauvegarde vers JSONBin");
+    }
 }
 
+let chats = [];
 
-let chats = load();
+(async () => {
+    chats = await load();
+})();
+
 const maxChats = 4;
 
 io.on("connection", (socket) => {
-
     console.log("New player connected !");
+    socket.emit("chat", chats);
 
-    socket.emit("chat", chats)
-
-    socket.on("chat", (chat) => {
+    socket.on("chat", async (chat) => {
         if (chats.length >= maxChats) {
             chats.shift();
         }
 
-        console.log(chat)
-
         chats.push(chat);
-        save(chats);
+        await save(chats);
 
         io.emit("chat", chats);
     });
 });
+
